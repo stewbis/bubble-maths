@@ -1,10 +1,11 @@
 /**
  * Bubble represents a solution bubble which moves around the page
  */
-function Bubble(number, left, top, id) {
+function Bubble(number, correct, left, top, id) {
 	this.id = id;
-	this.number = number;
+	this.correct = correct;
 	this.left = left;
+	this.number = number;
 	this.top = top;
 	this.increment = Math.random() >= 0.5 ? 2 : -2;
 	this.climbRate = 2 + Math.floor(Math.random() * 3);
@@ -15,11 +16,11 @@ function Bubble(number, left, top, id) {
 /**
  * Factory method to instantiate a bubble
  */
-Bubble.create = function(number, left, top, container) {
+Bubble.create = function(number, correct, left, top, container) {
 	var id = "bubble" + (Bubble.nextId++);
 	var html = "<div id='" + id + "' class='bubble'>" + number + "</div>";
 	container.innerHTML += html;
-	var bubble = new Bubble(number, left, top, id);
+	var bubble = new Bubble(number, correct, left, top, id);
 	bubble.position(left, top);
 	bubble.float();
 	return bubble;
