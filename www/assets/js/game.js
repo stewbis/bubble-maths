@@ -20,7 +20,7 @@ Game.create = function(table, numberOfBubbles, container) {
 
 	var left = 0;
 	var bubbles = new Array;
-	var top = window.innerHeight - 250;
+	var top = window.innerHeight;
 	for (i = 0; i < numberOfBubbles; i++) {
 		bubbles[i] = Bubble.create(answers[i], correct == answers[i], left, top, container);
 		left += 220;

@@ -2,6 +2,7 @@
  * Bubble represents a solution bubble which moves around the page
  */
 function Bubble(number, correct, left, top, id) {
+	document.getElementById(id).onclick = this.pop;
 	this.id = id;
 	this.correct = correct;
 	this.left = left;
