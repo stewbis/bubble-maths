@@ -1,10 +1,57 @@
 @CHARSET "ISO-8859-1";
 
+/* latin */
+@font-face {
+	font-family: 'Luckiest Guy';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Luckiest Guy'), local('LuckiestGuy-Regular'),
+		url(../fonts/luckiest-guy.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC,
+		U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
 body {
 	height: 100%;
 	background-image: url("../image/background.jpg");
 	background-repeat: no-repeat;
 	background-position: top;
+}
+
+h1, p, a {
+	font-family: 'Luckiest Guy', cursive;
+	font-weight: lighter;
+	color: gray;
+	text-align: center;
+	text-transform: none;
+	text-align: center;
+	text-transform: none;
+}
+
+h1 {
+	font-size: 30px;
+	padding: 20px;
+}
+
+p {
+	font-size: 20px;
+	padding: 20px;
+}
+
+.button {
+	display: block;
+	margin: auto;
+	width: 100px; box-shadow : 0px 0px 20px 0px rgba( 0, 0, 0, 0.25);
+	border-radius: 10px;
+	padding: 10px 30px 10px 30px;
+	background-color: orange;
+	border: 0px;
+	cursor: pointer;
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+}
+
+.button :hover {
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.50);
 }
 
 .bubble {
@@ -21,4 +68,15 @@ body {
 	color: white;
 	vertical-align: middle;
 	cursor: pointer;
+}
+
+.popup {
+	display : block;
+	width: 800px;
+	background-color: white;
+	margin: 100px auto 0px auto;
+	box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	padding: 20px;
+	display: block;
 }

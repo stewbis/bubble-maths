@@ -3,10 +3,23 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Bubble Maths</title>
-<link href='https://fonts.googleapis.com/css?family=Luckiest+Guy' rel='stylesheet' type='text/css' />
 <link href="./assets/css/bubble-maths.css" rel="stylesheet" type="text/css" />
-<script src="./assets/js/bubble.js"></script>
-<script src="./assets/js/game.js"></script>
+<script src="./assets/js/bubble-maths.js"></script>
 </head>
-<body onload="Game.create(1,5,document.getElementsByTagName('body')[0]);"></body>
+<body>
+  <a id="bubble0" class="bubble" onclick="Bubble.click(0)" style="visibility: hidden;"></a>
+  <a id="bubble1" class="bubble" onclick="Bubble.click(1)" style="visibility: hidden;"></a>
+  <a id="bubble2" class="bubble" onclick="Bubble.click(2)" style="visibility: hidden;"></a>
+  <a id="bubble3" class="bubble" onclick="Bubble.click(3)" style="visibility: hidden;"></a>
+  <a id="bubble4" class="bubble" onclick="Bubble.click(4)" style="visibility: hidden;"></a>
+  <div id="welcome" class="popup">
+    <h1>Rohan's Bubble Maths</h1>
+    <hr />
+    <p>Bubble maths is a great fun game where you get asked a maths question and the answer is hidden in a bubble.</p>
+    <p>
+      Click <em>play</em> to start your game.
+    </p>
+    <a id="start" onclick="Game.start(12, 10)" class="button">Start Game</a>
+  </div>
+</body>
 </html>
