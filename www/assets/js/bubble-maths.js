@@ -20,6 +20,7 @@ Game.BUBBLE_HEIGHT = 220
  */
 Game.questions = Array();
 Game.bubbles = Array();
+Game.answers = Array();
 Game.current = null;
 
 /**
@@ -27,16 +28,22 @@ Game.current = null;
  */
 Game.start = function(limit, questions) {
   document.getElementById("welcome").style.visibility = "hidden";
-  Game.questions = Questions.create(limit, questions);
-  Game.startRound(Game.questions.pop());
+  Game.questions = Questions.createRandom(limit, questions);
+  Game.answers = Questions.createAll(limit);
+  Game.startRound(Game.questions.shift());
 }
 
 /**
  * Start a round of the game
  */
 Game.startRound = function(question) {
+  var answers = Game.answers.slice().sort(function() {
+    return .5 - Math.random();
+  }).slice(0, 5);
+  var correct = 1 + (Math.floor(Math.random() * 10) / 2);
+  answers[correct] = question;
   Game.current = question;
-  Game.bubbles = Bubbles.create(question);
+  Game.bubbles = Bubbles.create(answers);
 }
 
 /**
@@ -48,15 +55,6 @@ function Question(lhs, rhs) {
 }
 
 /**
- * Factory method to instantiate a bubble
- */
-Question.create = function(limit) {
-  var rhs = Math.floor(Math.random() * limit) + 1;
-  var lhs = Math.floor(Math.random() * limit) + 1;
-  return new Question(lhs, rhs);
-}
-
-/**
  * Return the correct answer to the question
  */
 Question.prototype.answer = function() {
@@ -64,14 +62,34 @@ Question.prototype.answer = function() {
 }
 
 /**
- * Create the required number of questions
+ * Create a random array of questions
+ * 
+ * @param limit
+ *          the highest number to use
+ * @param count
+ *          the number of questions to return
+ * @returns
  */
-Questions.create = function(limit, count) {
-  var questions = new Array;
-  for (i = 0; i < count; ++i) {
-    questions[i] = Question.create(limit);
+Questions.createRandom = function(limit, count) {
+  var all = Questions.createAll(limit);
+  all.sort(function() {
+    return .5 - Math.random();
+  });
+  return all.slice(0, limit - 1);
+}
+
+/**
+ * Create an array of questions containing all question combinations up to the
+ * limit
+ */
+Questions.createAll = function(limit) {
+  var all = new Array();
+  for (i = 1; i <= limit; ++i) {
+    for (j = 1; j <= limit; ++j) {
+      all.push(new Question(i, j))
+    }
   }
-  return questions;
+  return all;
 }
 
 /**
@@ -163,12 +181,13 @@ Bubble.prototype.floatUp = function() {
 /**
  * Create the bubbles collection
  */
-Bubbles.create = function(question) {
+Bubbles.create = function(answers) {
+  var questions = new Array;
   var bubbles = new Array;
   var left = 0;
   var top = window.innerHeight - Game.BUBBLE_HEIGHT;
   for (i = 0; i < Game.NUMBER_OF_BUBBLES; i++) {
-    var bubble = new Bubble("bubble" + i, left, top, question);
+    var bubble = new Bubble("bubble" + i, left, top, answers[i]);
     left += Game.BUBBLE_WIDTH
     bubbles[i] = bubble;
     bubble.float();
@@ -184,7 +203,7 @@ Bubble.click = function(index) {
   var bubble = Game.bubbles[index];
   if (bubble.isQuestion(Game.current)) {
     while (Game.bubbles.length > 0) {
-      Game.bubbles.pop().pop();
+      Game.bubbles.shift().pop();
     }
   } else {
     bubble.pop();
