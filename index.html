@@ -8,12 +8,16 @@
 </head>
 <body>
   <p id="question" class="question-panel"></p>
-  <div id="welcome" class="popup">
+  <div id="welcome" class="popup" >
     <h1>Rohan's Bubble Maths</h1>
     <hr />
     <p id="welcome-text">Bubble maths is a great fun game where you get asked a maths question and the answer is hidden in a bubble.</p>
-    <p id="welcome-play-text">Click <em>play</em> to start your game.</p>
-    <a id="welcome-play-button" onclick="Game.start(12, 10)" class="button">Start Game</a>
+    <p id="welcome-play-text">Click a button to start your game.</p>
+    <div class="button-panel">
+      <a onclick="Game.start(6, 10, 0)" class="button">Easy Game</a>
+      <a onclick="Game.start(12, 10, 1)" class="button">Medium Game</a>
+      <a onclick="Game.start(12, 10, 3)" class="button">Hard Game</a>
+    </div>
   </div>
   <a id="bubble0" class="bubble" onclick="Bubble.click(0)"></a>
   <a id="bubble1" class="bubble" onclick="Bubble.click(1)"></a>

@@ -22,6 +22,7 @@ Game.questions = Array();
 Game.bubbles = Array();
 Game.answers = Array();
 Game.current = null;
+Game.difficulty = 1;
 Game.wrong = 0;
 Game.right = 0;
 Game.startTs = Date.now();
@@ -30,8 +31,9 @@ Game.endTs = Date.now();
 /**
  * Start the game
  */
-Game.start = function(limit, questions) {
+Game.start = function(limit, questions, difficulty) {
   document.getElementById("welcome").style.visibility = "hidden";
+  Game.difficulty = difficulty;
   Game.questions = Questions.createRandom(limit, questions);
   Game.answers = Questions.createAll(limit);
   Game.wrong = 0;
@@ -63,8 +65,6 @@ Game.end = function() {
   document.getElementById("question").style.visibility = "hidden";
   document.getElementById("welcome").style.visibility = "visible";
   document.getElementById("welcome-text").innerHTML = "You got " + Game.right + " answers and " + Game.wrong + " wrong answers in " + ((Game.endTs - Game.startTs)/1000) + " seconds";
-  document.getElementById("welcome-play-text").innerHTML = "Click <em>play again</em> for a new game";
-  document.getElementById("welcome-play-button").innerHTML = "Play Again";
 }
 
 /**
@@ -138,7 +138,7 @@ function Bubble(index, id, left, top, question) {
   this.left = left;
   this.top = top;
   this.increment = Math.random() >= 0.5 ? 2 : -2;
-  this.climbRate = 1 + Math.ceil(Math.random() * 2);
+  this.climbRate = Game.difficulty + Math.ceil(Math.random() * 2);
   this.changeDirectionInterval = 3
   this.countdown = 10;
   this.timer = null;
