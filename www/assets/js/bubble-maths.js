@@ -22,6 +22,10 @@ Game.questions = Array();
 Game.bubbles = Array();
 Game.answers = Array();
 Game.current = null;
+Game.wrong = 0;
+Game.right = 0;
+Game.startTs = Date.now();
+Game.endTs = Date.now();
 
 /**
  * Start the game
@@ -30,6 +34,9 @@ Game.start = function(limit, questions) {
   document.getElementById("welcome").style.visibility = "hidden";
   Game.questions = Questions.createRandom(limit, questions);
   Game.answers = Questions.createAll(limit);
+  Game.wrong = 0;
+  Game.right = 0;
+  Game.startTs = Date.now();
   Game.startRound(Game.questions.shift());
 }
 
@@ -40,10 +47,24 @@ Game.startRound = function(question) {
   var answers = Game.answers.slice().sort(function() {
     return .5 - Math.random();
   }).slice(0, 5);
-  var correct = 1 + (Math.floor(Math.random() * 10) / 2);
+  var correct = Math.floor(Math.random() * 5);
   answers[correct] = question;
+  document.getElementById("question").style.visibility = "visible";
+  document.getElementById("question").innerHTML = "<p>What is " + question.lhs + " + " + question.rhs + "</p>";
   Game.current = question;
   Game.bubbles = Bubbles.create(answers);
+}
+
+/**
+ * End the game
+ */
+Game.end = function() {
+  Game.endTs = Date.now();
+  document.getElementById("question").style.visibility = "hidden";
+  document.getElementById("welcome").style.visibility = "visible";
+  document.getElementById("welcome-text").innerHTML = "You got " + Game.right + " answers and " + Game.wrong + " wrong answers in " + ((Game.endTs - Game.startTs)/1000) + " seconds";
+  document.getElementById("welcome-play-text").innerHTML = "Click <em>play again</em> for a new game";
+  document.getElementById("welcome-play-button").innerHTML = "Play Again";
 }
 
 /**
@@ -59,6 +80,20 @@ function Question(lhs, rhs) {
  */
 Question.prototype.answer = function() {
   return this.lhs + this.rhs;
+}
+
+/**
+ * Return the correct answer to the question
+ */
+Question.prototype.rhs = function() {
+  return this.rhs;
+}
+
+/**
+ * Return the correct answer to the question
+ */
+Question.prototype.lhs = function() {
+  return this.lhs;
 }
 
 /**
@@ -95,14 +130,15 @@ Questions.createAll = function(limit) {
 /**
  * Bubble represents a solution bubble which moves around the page
  */
-function Bubble(id, left, top, question) {
+function Bubble(index, id, left, top, question) {
   document.getElementById(id).innerHTML = question.answer();
   this.question = question;
   this.id = id;
+  this.index = index;
   this.left = left;
   this.top = top;
   this.increment = Math.random() >= 0.5 ? 2 : -2;
-  this.climbRate = 2 + Math.floor(Math.random() * 3);
+  this.climbRate = 1 + Math.ceil(Math.random() * 2);
   this.changeDirectionInterval = 3
   this.countdown = 10;
   this.timer = null;
@@ -166,7 +202,7 @@ Bubble.prototype.floatUp = function() {
   this.left += this.increment;
   this.top -= this.climbRate;
   if (this.top <= 0) {
-    this.pop()
+    Bubble.click(this.index);
   } else if (this.left < 0) {
     this.increment = 2
     this.position(this.left + 2, this.top);
@@ -187,7 +223,7 @@ Bubbles.create = function(answers) {
   var left = 0;
   var top = window.innerHeight - Game.BUBBLE_HEIGHT;
   for (i = 0; i < Game.NUMBER_OF_BUBBLES; i++) {
-    var bubble = new Bubble("bubble" + i, left, top, answers[i]);
+    var bubble = new Bubble(i, "bubble" + i, left, top, answers[i]);
     left += Game.BUBBLE_WIDTH
     bubbles[i] = bubble;
     bubble.float();
@@ -200,13 +236,23 @@ Bubbles.create = function(answers) {
  * Handle if a bubble is clicked
  */
 Bubble.click = function(index) {
+  
   var bubble = Game.bubbles[index];
   if (bubble.isQuestion(Game.current)) {
+    Game.right++;
     while (Game.bubbles.length > 0) {
       Game.bubbles.shift().pop();
     }
   } else {
+    Game.wrong++;
     bubble.pop();
   }
 
+  if (Game.bubbles.length == 0) {
+    if (Game.questions.length > 0) {
+      Game.startRound(Game.questions.shift());
+    } else {
+      Game.end();
+    }
+  }
 }
