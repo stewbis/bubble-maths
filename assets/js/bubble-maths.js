@@ -65,7 +65,7 @@ Game.end = function() {
   document.getElementById("question").style.visibility = "hidden";
   document.getElementById("welcome").style.visibility = "visible";
   document.getElementById("welcome-text").innerHTML = "You got " + Game.right
-      + " answers and "
+      + " correct answers and "
       + Game.wrong
       + " wrong answers in "
       + ((Game.endTs - Game.startTs) / 1000)
