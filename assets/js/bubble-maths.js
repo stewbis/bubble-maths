@@ -64,7 +64,12 @@ Game.end = function() {
   Game.endTs = Date.now();
   document.getElementById("question").style.visibility = "hidden";
   document.getElementById("welcome").style.visibility = "visible";
-  document.getElementById("welcome-text").innerHTML = "You got " + Game.right + " answers and " + Game.wrong + " wrong answers in " + ((Game.endTs - Game.startTs)/1000) + " seconds";
+  document.getElementById("welcome-text").innerHTML = "You got " + Game.right
+      + " answers and "
+      + Game.wrong
+      + " wrong answers in "
+      + ((Game.endTs - Game.startTs) / 1000)
+      + " seconds";
 }
 
 /**
@@ -220,11 +225,13 @@ Bubble.prototype.floatUp = function() {
 Bubbles.create = function(answers) {
   var questions = new Array;
   var bubbles = new Array;
-  var left = 0;
+  var freespace = (window.innerWidth - (Game.NUMBER_OF_BUBBLES * Game.BUBBLE_WIDTH));
+  var spacing = freespace < 0 ? 0 : (freespace / (Game.NUMBER_OF_BUBBLES + 2));
+  var left = spacing;
   var top = window.innerHeight - Game.BUBBLE_HEIGHT;
   for (i = 0; i < Game.NUMBER_OF_BUBBLES; i++) {
     var bubble = new Bubble(i, "bubble" + i, left, top, answers[i]);
-    left += Game.BUBBLE_WIDTH
+    left += Game.BUBBLE_WIDTH + spacing;
     bubbles[i] = bubble;
     bubble.float();
     bubble.show();
@@ -236,7 +243,7 @@ Bubbles.create = function(answers) {
  * Handle if a bubble is clicked
  */
 Bubble.click = function(index) {
-  
+
   var bubble = Game.bubbles[index];
   if (bubble.isQuestion(Game.current)) {
     Game.right++;
