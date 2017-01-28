@@ -2,9 +2,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Bubble Maths</title>
+<title>Bubble Maths (Addition)</title>
 <link href="./assets/css/bubble-maths.css" rel="stylesheet" type="text/css" />
-<script src="./assets/js/bubble-maths.js"></script>
+<script src="./assets/js/question.js"></script>
+<script src="./assets/js/operation.js"></script>
+<script src="./assets/js/game.js"></script>
+<script src="./assets/js/bubble.js"></script>
 </head>
 <body>
   <p id="question" class="question-panel"></p>
@@ -14,9 +17,14 @@
     <p id="welcome-text">Bubble maths is a great fun game where you get asked a maths question and the answer is hidden in a bubble.</p>
     <p id="welcome-play-text">Click a button to start your game.</p>
     <div class="button-panel">
-      <a onclick="Game.start(6, 10, 0)" class="button">Easy Game</a>
-      <a onclick="Game.start(12, 10, 1)" class="button">Medium Game</a>
-      <a onclick="Game.start(12, 10, 3)" class="button">Hard Game</a>
+      <a onclick="Game.start(1,6,1,6,10,1,Operation.ADDITION)" class="button">Easy Addition</a>
+      <a onclick="Game.start(1,10,1,10,10,2,Operation.ADDITION)" class="button">Medium Addition</a>
+      <a onclick="Game.start(1,12,1,12,10,3,Operation.ADDITION)" class="button">Hard Addition</a>
+    </div>
+    <div class="button-panel">
+      <a onclick="Game.start(1,12,2,2,10,0,Operation.MULTIPLICATION)" class="button">2 Times Table</a>
+      <a onclick="Game.start(1,12,5,5,10,0,Operation.MULTIPLICATION)" class="button">5 Times Table</a>
+      <a onclick="Game.start(1,12,10,10,10,0,Operation.MULTIPLICATION)" class="button">10 Times Table</a>
     </div>
   </div>
   <a id="bubble0" class="bubble" onclick="Bubble.click(0)"></a>
